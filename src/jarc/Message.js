@@ -18,7 +18,7 @@
         }
 
         var args = match[3].split(/ +/g);
-        
+
         if (match[4]) {
             args.push(match[5]);
         }
@@ -37,8 +37,19 @@
         };
     };
 
-    exports.toRawString = function () {
-        // Derp.
-        return 'PING :data';
+    exports.toRawString = function (message) {
+        var retParts = [ ];
+
+        if (message.prefixString) {
+            retParts.push(':' + message.prefixString);
+        }
+
+        retParts.push(message.command);
+
+        retParts = retParts.concat(message.parameters.slice(0, -1));
+
+        retParts.push(':' + message.parameters.slice(-1)[0]);
+
+        return retParts.join(' ');
     };
 }());

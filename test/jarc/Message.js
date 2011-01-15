@@ -23,12 +23,21 @@
     exports.toRawString = {
         simple: function () {
             var message = {
-                prefix: null,
                 command: 'PING',
                 parameters: [ 'data' ]
             };
 
             assert.equal(Message.toRawString(message), 'PING :data');
+        },
+
+        complex: function () {
+            var message = {
+                prefixString: '~a!b@c.d',
+                command: 'PRIVMSG',
+                parameters: [ 'rec', 'message goes here' ]
+            };
+
+            assert.equal(Message.toRawString(message), ':~a!b@c.d PRIVMSG rec :message goes here');
         }
     };
 }());
