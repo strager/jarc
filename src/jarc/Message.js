@@ -1,4 +1,7 @@
 (function () {
+    exports.separatorString = '\r\n';
+    exports.separatorRegExp = /\r\n/gm;
+
     exports.fromRawString = function (rawString) {
         var lazyMessage = new RegExp(
             '^' +
