@@ -2,8 +2,8 @@
     var assert = require('assert');
     var MessageStream = require('jarc/MessageStream').$;
 
-    exports.write = {
-        emitsInboundMessageOnDataWrite: function () {
+    exports.inbound = {
+        emitsMessageOnWrite: function () {
             var stream = new MessageStream();
 
             var messageArgument;
@@ -19,9 +19,11 @@
                 command: 'PING',
                 parameters: [ 'Hello, are you there?' ]
             });
-        },
+        }
+    };
 
-        emitsOutboundDataOnMessageWrite: function () {
+    exports.outbound = {
+        emitsDataOnWrite: function () {
             var stream = new MessageStream();
 
             var dataArgument;
