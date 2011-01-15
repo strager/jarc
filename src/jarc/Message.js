@@ -38,17 +38,56 @@
     };
 
     exports.toRawString = function (message) {
+        function containsOnlyNonWhitespace(string) {
+            return /^\S+$/.test(string);
+        }
+
         var retParts = [ ];
 
         if (message.prefixString) {
+            if (!containsOnlyNonWhitespace(message.prefixString)) {
+                throw {
+                    message: 'Prefix must not contain whitespace',
+                    messageData: message,
+                    prefix: message.prefixString
+                };
+            }
+
             retParts.push(':' + message.prefixString);
+        }
+
+        if (typeof message.command !== 'string' || !containsOnlyNonWhitespace(message.command)) {
+            throw {
+                message: 'Command must be non-empty and must not contain whitespace',
+                messageData: message,
+                command: message.command
+            };
         }
 
         retParts.push(message.command);
 
-        retParts = retParts.concat(message.parameters.slice(0, -1));
+        var parameters;
 
-        retParts.push(':' + message.parameters.slice(-1)[0]);
+        if (message.parameters instanceof Array) {
+            parameters = message.parameters.slice(0, -1);
+
+            parameters.forEach(function (parameter, index) {
+                if (!containsOnlyNonWhitespace(parameter)) {
+                    throw {
+                        message: 'Only the last parameter can contain whitespace',
+                        messageData: message,
+                        parameter: parameter,
+                        parameterIndex: index
+                    };
+                }
+            });
+
+            retParts = retParts.concat(parameters);
+
+            if (message.parameters.length > 0) {
+                retParts.push(':' + message.parameters.slice(-1)[0]);
+            }
+        }
 
         return retParts.join(' ');
     };
