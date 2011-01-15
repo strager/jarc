@@ -60,6 +60,20 @@
                     parameters: [ '<3', 'you' ]
                 }
             ]);
+        },
+
+        emitsErrorOnBadWrite: function () {
+            var stream = new MessageStream();
+
+            var emitted = false;
+
+            stream.inbound.on('error', function () {
+                emitted = true;
+            });
+
+            stream.inbound.write(':PrefixOnlyMessage\r\n');
+
+            assert.equal(emitted, true);
         }
     };
 
@@ -79,6 +93,22 @@
             });
 
             assert.equal(dataArgument, 'PING :Hello, are you there?\r\n');
+        },
+
+        emitsErrorOnBadMessage: function () {
+            var stream = new MessageStream();
+
+            var emitted = false;
+
+            stream.outbound.on('error', function () {
+                emitted = true;
+            });
+
+            stream.outbound.write({
+                command: 'I am a rebel'
+            });
+
+            assert.equal(emitted, true);
         }
     };
 }());

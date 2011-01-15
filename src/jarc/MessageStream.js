@@ -26,7 +26,15 @@ exports.$ = (function () {
         }
 
         parts.slice(0, -1).forEach(function (part) {
-            var message = Message.fromRawString(part);
+            var message;
+            
+            try {
+                message = Message.fromRawString(part);
+            } catch (e) {
+                this.emit('error', e);
+
+                return;
+            }
 
             this.emit('message', message);
         }, this);
@@ -38,7 +46,15 @@ exports.$ = (function () {
     OutboundMessageStream.prototype = new EventEmitter();
 
     OutboundMessageStream.prototype.write = function (message) {
-        var data = Message.toRawString(message) + messageSeparator;
+        var data;
+        
+        try {
+            data = Message.toRawString(message) + messageSeparator;
+        } catch (e) {
+            this.emit('error', e);
+
+            return;
+        }
 
         this.emit('data', data);
     };
