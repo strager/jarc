@@ -19,6 +19,47 @@
                 command: 'PING',
                 parameters: [ 'Hello, are you there?' ]
             });
+        },
+
+        doesNotEmitIncompleteMessage: function () {
+            var stream = new MessageStream();
+
+            var emitted = false;
+
+            stream.inbound.on('message', function () {
+                emitted = true;
+            });
+
+            stream.inbound.write('PING :incomplete D=');
+
+            assert.equal(emitted, false);
+        },
+
+        emitsMultipleMessagesOnSplitWrite: function () {
+            var stream = new MessageStream();
+
+            var messages = [ ];
+
+            stream.inbound.on('message', function (message) {
+                messages.push(message);
+            });
+
+            stream.inbound.write('PING :');
+            stream.inbound.write('Hello, are you there?\r');
+            stream.inbound.write('\n:prefix I <3 you\r\n');
+
+            assert.deepEqual(messages, [
+                {
+                    prefixString: null,
+                    command: 'PING',
+                    parameters: [ 'Hello, are you there?' ]
+                },
+                {
+                    prefixString: 'prefix',
+                    command: 'I',
+                    parameters: [ '<3', 'you' ]
+                }
+            ]);
         }
     };
 
