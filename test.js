@@ -2,7 +2,7 @@
     var fs = require('fs');
 
     require.paths.unshift(__dirname);
-    require.paths.unshift(__dirname + '/src');
+    require.paths.unshift(__dirname + '/lib');
 
     function joinPaths(/* paths... */) {
         return Array.prototype.join.call(arguments, '/');
