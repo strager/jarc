@@ -1,7 +1,7 @@
 {
     "name": "jarc",
     "description": "IRC message [de]serializer for servers and clients",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "keywords": [ "irc" ],
     "maintainers": [
         {
