@@ -18,7 +18,17 @@
             assert.equal(message.prefixString, '~a!b@c.d');
             assert.equal(message.command, 'PRIVMSG');
             assert.deepEqual(message.parameters, [ 'rec', 'message goes here' ]);
-        }
+        },
+
+        prefixOnlyThrows: function () {
+            massert.throws(function () {
+                Message.fromRawString(':ImJustAPrefixBro');
+            });
+
+            massert.throws(function () {
+                Message.fromRawString(':ImJustAPrefixBro  ');
+            });
+        },
     };
 
     exports.toRawString = {

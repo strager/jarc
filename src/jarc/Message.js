@@ -1,4 +1,7 @@
 (function () {
+    exports.separatorString = '\r\n';
+    exports.separatorRegExp = /\r\n/gm;
+
     exports.fromRawString = function (rawString) {
         var lazyMessage = new RegExp(
             '^' +
@@ -23,7 +26,7 @@
             args.push(match[5]);
         }
 
-        if (args.length === 0) {
+        if (args.length === 0 || args[0].length == 0 || args[0][0] === ':') {
             throw {
                 message: 'Raw message must contain at least one argument',
                 rawString: rawString
