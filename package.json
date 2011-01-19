@@ -1,0 +1,37 @@
+{
+    "name": "jarc",
+    "description": "IRC message [de]serializer for servers and clients",
+    "version": "0.0.0",
+    "keywords": [ "irc" ],
+    "maintainers": [
+        {
+            "name": "Strager Neds",
+            "email": "strager.nds@gmail.com",
+            "web": "http://strager.net/"
+        }
+    ],
+    "contributors": [
+        {
+            "name": "Strager Neds",
+            "email": "strager.nds@gmail.com",
+            "web": "http://strager.net/"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "BSD",
+            "url": "http://www.opensource.org/licenses/bsd-license"
+        }
+    ]
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/strager/jarc.git"
+        }
+    ],
+    "dependencies": {
+    },
+    "scripts": {
+        "test": "test.js"
+    }
+}
