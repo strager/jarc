@@ -29,6 +29,52 @@
                 Message.fromRawString(':ImJustAPrefixBro  ');
             });
         },
+
+        ctcp: {
+            privmsg: function () {
+                var message = Message.fromRawString(':a!b@c.d PRIVMSG foobar :\x01PING\x01');
+
+                assert.deepEqual(message, {
+                    prefixString: 'a!b@c.d',
+                    command: 'PRIVMSG',
+                    parameters: [ 'foobar' ],
+                    ctcp: {
+                        command: 'PING',
+                        parameters: [ ]
+                    }
+                });
+            },
+
+            notice: function () {
+                var message = Message.fromRawString('NOTICE foobar :\x01CTCP message here :stuff and stuff\x01');
+
+                assert.deepEqual(message, {
+                    prefixString: null,
+                    command: 'NOTICE',
+                    parameters: [ 'foobar' ],
+                    ctcp: {
+                        command: 'CTCP',
+                        parameters: [ 'message', 'here', 'stuff and stuff' ]
+                    }
+                });
+            },
+
+            notJoin: function () {
+                var message = Message.fromRawString('JOIN #a,#b :\x01KEY HERE\x01');
+
+                assert.deepEqual(message, {
+                    prefixString: null,
+                    command: 'JOIN',
+                    parameters: [ '#a,#b', '\x01KEY HERE\x01' ]
+                });
+            },
+
+            colonCommand: function () {
+                var message = Message.fromRawString('NOTICE foobar :\x01:abc PRIVMSG foobar :net\x01');
+
+                // TODO How do I handle this?  Check RFC.
+            }
+        }
     };
 
     exports.toRawString = {
